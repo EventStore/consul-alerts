@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os/exec"
 
-	"github.com/AcalephStorage/consul-alerts/consul"
+	"github.com/EventStore/consul-alerts/consul"
 
 	log "github.com/sirupsen/logrus"
 )

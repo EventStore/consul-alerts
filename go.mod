@@ -1,4 +1,4 @@
-module github.com/AcalephStorage/consul-alerts
+module github.com/EventStore/consul-alerts
 
 go 1.16
 

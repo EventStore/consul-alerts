@@ -13,14 +13,14 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/AcalephStorage/consul-alerts/consul"
-	"github.com/AcalephStorage/consul-alerts/notifier"
+	"github.com/EventStore/consul-alerts/consul"
+	"github.com/EventStore/consul-alerts/notifier"
 
 	"github.com/docopt/docopt-go"
 	log "github.com/sirupsen/logrus"
 )
 
-const version = "Consul Alerts 0.5.0"
+const version = "Consul Alerts 0.6.1"
 const usage = `Consul Alerts.
 
 Usage:

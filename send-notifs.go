@@ -9,7 +9,7 @@ import (
 	"github.com/mitchellh/hashstructure"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/AcalephStorage/consul-alerts/notifier"
+	"github.com/EventStore/consul-alerts/notifier"
 )
 
 // NotifEngine handles notifications.

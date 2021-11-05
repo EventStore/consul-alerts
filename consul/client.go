@@ -10,7 +10,7 @@ import (
 
 	"encoding/json"
 
-	notifier "github.com/AcalephStorage/consul-alerts/notifier"
+	notifier "github.com/EventStore/consul-alerts/notifier"
 
 	consulapi "github.com/hashicorp/consul/api"
 	log "github.com/sirupsen/logrus"
