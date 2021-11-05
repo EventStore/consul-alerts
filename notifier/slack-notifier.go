@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	log "github.com/AcalephStorage/consul-alerts/Godeps/_workspace/src/github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 type SlackNotifier struct {
@@ -94,8 +94,7 @@ func (slack *SlackNotifier) notifyDetailed(messages Messages) bool {
 	pretext := fmt.Sprintf("%s %s is *%s*", emoji, slack.ClusterName, overallStatus)
 
 	detailedBody := ""
-	detailedBody += fmt.Sprintf("*Changes:* Fail = %d, Warn = %d, Pass = %d", fail, warn, pass)
-	detailedBody += fmt.Sprintf("\n")
+	detailedBody += fmt.Sprintf("*Changes:* Fail = %d, Warn = %d, Pass = %d\n", fail, warn, pass)
 
 	for _, message := range messages {
 		detailedBody += fmt.Sprintf("\n*[%s:%s]* %s is *%s.*", message.Node, message.Service, message.Check, message.Status)

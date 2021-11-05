@@ -3,13 +3,12 @@ package notifier
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"text/template"
 
-	log "github.com/AcalephStorage/consul-alerts/Godeps/_workspace/src/github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 const apiEndpoint string = "https://ilertnow.com/api/v1/events"
@@ -108,7 +107,7 @@ func (il *ILertNotifier) sendEvent(event iLertEvent) error {
 
 	if res.StatusCode != 200 {
 		body, _ := ioutil.ReadAll(res.Body)
-		return errors.New(fmt.Sprintf("Unexpected HTTP status code: %d (%s)", res.StatusCode, string(body)))
+		return fmt.Errorf("unexpected HTTP status code: %d (%s)", res.StatusCode, string(body))
 	}
 
 	return nil
@@ -123,7 +122,7 @@ func (il *ILertNotifier) incidentKey(message Message) (string, error) {
 
 	err := il.incidentKeyTemplateCompiled.ExecuteTemplate(&buff, "IncidentKey", message)
 	if err != nil {
-		return "", errors.New(fmt.Sprintf("Unable to render incident key: %s", err))
+		return "", fmt.Errorf("unable to render incident key: %s", err)
 	}
 
 	return buff.String(), nil

@@ -1,8 +1,8 @@
 package notifier
 
 import (
-	log "github.com/AcalephStorage/consul-alerts/Godeps/_workspace/src/github.com/Sirupsen/logrus"
-	"github.com/AcalephStorage/consul-alerts/Godeps/_workspace/src/github.com/darkcrux/gopherduty"
+	"github.com/darkcrux/gopherduty"
+	log "github.com/sirupsen/logrus"
 )
 
 const defaultRetryBaseInterval = 30
@@ -13,7 +13,7 @@ type PagerDutyNotifier struct {
 	ClientName        string `json:"client-name"`
 	ClientUrl         string `json:"client-url"`
 	MaxRetry          int    `json:"max-retry"`
-	RetryBaseInterval int    `json:"retry-base-interval"'`
+	RetryBaseInterval int    `json:"retry-base-interval"`
 }
 
 // NotifierName provides name for notifier selection

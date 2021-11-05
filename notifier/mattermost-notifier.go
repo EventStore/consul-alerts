@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	log "github.com/AcalephStorage/consul-alerts/Godeps/_workspace/src/github.com/Sirupsen/logrus"
 	"net/http"
 	"strconv"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type StringMap map[string]string
@@ -414,7 +415,7 @@ func (mattermost *MattermostNotifier) PostMessage(teamID string, channelID strin
 
 	buf := new(bytes.Buffer)
 	encoder := json.NewEncoder(buf)
-	err := encoder.Encode(*postInfo)
+	encoder.Encode(*postInfo)
 
 	req, err := http.NewRequest("POST", postURL, buf)
 	if err != nil {
@@ -448,7 +449,7 @@ func (mattermost *MattermostNotifier) PostMessage(teamID string, channelID strin
 }
 
 func (mattermost *MattermostNotifier) Init() bool {
-	if mattermost.Initialized == true {
+	if mattermost.Initialized {
 		return true
 	}
 
@@ -577,9 +578,8 @@ func (mattermost *MattermostNotifier) notifyDetailed(messages Messages) bool {
 	pretext := fmt.Sprintf("%s %s is *%s*", emoji, mattermost.ClusterName, overallStatus)
 
 	detailedBody := ""
-	detailedBody += fmt.Sprintf("*Changes:* Fail = %d, Warn = %d, Pass = %d",
+	detailedBody += fmt.Sprintf("*Changes:* Fail = %d, Warn = %d, Pass = %d\n",
 		fail, warn, pass)
-	detailedBody += fmt.Sprintf("\n")
 
 	for _, message := range messages {
 		detailedBody += fmt.Sprintf("\n*[%s:%s]* %s is *%s.*",
