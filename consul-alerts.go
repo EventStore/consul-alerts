@@ -288,7 +288,7 @@ func builtinNotifiers() map[string]notifier.Notifier {
 	}
 	if httpEndpointNotifier.Enabled {
 		notifiers[httpEndpointNotifier.NotifierName()] = httpEndpointNotifier
-  }
+	}
 	if ilertNotifier.Enabled {
 		notifiers[ilertNotifier.NotifierName()] = ilertNotifier
 	}
