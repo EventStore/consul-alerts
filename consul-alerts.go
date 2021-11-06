@@ -20,7 +20,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const version = "Consul Alerts 0.6.1"
+const version = "Consul Alerts 0.6.2"
 const usage = `Consul Alerts.
 
 Usage:
@@ -87,37 +87,57 @@ func daemonMode(arguments map[string]interface{}) {
 		log.Debug("Config data: ", confData)
 	}
 
-	if confData["log-level"] != nil {
+	if _, ok := os.LookupEnv("LOG_LEVEL"); ok {
+		loglevelString = os.Getenv("LOG_LEVEL")
+	} else if _, ok := confData["log-level"]; ok {
 		loglevelString = confData["log-level"].(string)
 	} else {
 		loglevelString = arguments["--log-level"].(string)
 	}
-	if confData["consul-acl-token"] != nil {
+
+	if _, ok := os.LookupEnv("CONSUL_HTTP_TOKEN"); ok {
+		consulAclToken = os.Getenv("CONSUL_HTTP_TOKEN")
+	} else if _, ok := confData["consul-acl-token"]; ok {
 		consulAclToken = confData["consul-acl-token"].(string)
 	} else {
 		consulAclToken = arguments["--consul-acl-token"].(string)
 	}
-	if confData["consul-addr"] != nil {
+
+	if _, ok := os.LookupEnv(("CONSUL_HTTP_ADDR")); ok {
+		consulAddr = os.Getenv("CONSUL_HTTP_ADDR")
+	} else if confData["consul-addr"] != nil {
 		consulAddr = confData["consul-addr"].(string)
 	} else {
 		consulAddr = arguments["--consul-addr"].(string)
 	}
-	if confData["consul-dc"] != nil {
+
+	if _, ok := os.LookupEnv("CONSUL_DATACENTER"); ok {
+		consulDc = os.Getenv("CONSUL_DATACENTER")
+	} else if confData["consul-dc"] != nil {
 		consulDc = confData["consul-dc"].(string)
 	} else {
 		consulDc = arguments["--consul-dc"].(string)
 	}
-	if confData["alert-addr"] != nil {
+
+	if _, ok := os.LookupEnv("CONSUL_ALERT_ADDR"); ok {
+		addr = os.Getenv("CONSUL_ALERT_ADDR")
+	} else if confData["alert-addr"] != nil {
 		addr = confData["alert-addr"].(string)
 	} else {
 		addr = arguments["--alert-addr"].(string)
 	}
-	if confData["watch-checks"] != nil {
+
+	if _, ok := os.LookupEnv("WATCH_CHECKS"); ok {
+		watchChecks = os.Getenv("WATCH_CHECKS") == "true"
+	} else if confData["watch-checks"] != nil {
 		watchChecks = confData["watch-checks"].(bool)
 	} else {
 		watchChecks = arguments["--watch-checks"].(bool)
 	}
-	if confData["watch-events"] != nil {
+
+	if _, ok := os.LookupEnv("WATCH_EVENTS"); ok {
+		watchEvents = os.Getenv("WATCH_EVENTS") == "true"
+	} else if confData["watch-events"] != nil {
 		watchEvents = confData["watch-events"].(bool)
 	} else {
 		watchEvents = arguments["--watch-events"].(bool)
@@ -167,7 +187,7 @@ func daemonMode(arguments map[string]interface{}) {
 	http.HandleFunc("/v1/health", healthHandler)
 	go startAPI(addr)
 
-	log.Println("Started Consul-Alerts API")
+	log.Println("Started Consul-Alerts API listening on:", addr)
 
 	if watchChecks {
 		go runWatcher(consulAddr, consulDc, addr, loglevelString, consulAclToken, "checks")
