@@ -51,7 +51,7 @@ var consulClient consul.Consul
 
 func main() {
 	log.SetLevel(log.InfoLevel)
-	args, _ := docopt.Parse(usage, nil, true, version, false)
+	args, _ := docopt.ParseArgs(usage, nil, version)
 
 	switch {
 	case args["start"].(bool):
@@ -176,7 +176,7 @@ func daemonMode(arguments map[string]interface{}) {
 		go runWatcher(consulAddr, consulDc, addr, loglevelString, consulAclToken, "event")
 	}
 
-	ch := make(chan os.Signal)
+	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-ch
 	cleanup(notifEngine, cp, ep, leaderCandidate)
